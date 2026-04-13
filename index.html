@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BudgetFruitsHub — Seller Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #128c7e;
+  --green-dk: #075e54;
+  --green-lt: #25d366;
+  --teal:     #00897b;
+  --mint:     #e8f5e9;
+  --bubble-in:  #ffffff;
+  --bubble-out: #dcf8c6;
+  --chat-bg:  #eae6df;
+  --gold:     #f6a623;
+  --text:     #1a1a2e;
+  --text-2:   #5a5a7a;
+  --text-3:   #9898b0;
+  --border:   #e0e0ef;
+  --surface:  #f8f8fc;
+  --white:    #ffffff;
+  --radius:   16px;
+  --radius-sm: 10px;
+  --shadow:   0 4px 24px rgba(0,0,0,.08);
+  --shadow-lg:0 12px 48px rgba(0,0,0,.12);
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: #f0f4f0;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, var(--green-dk) 0%, var(--green) 60%, var(--green-lt) 100%);
+  padding: 28px 32px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '🍎🍊🍇🍌🍐';
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  opacity: .18;
+  letter-spacing: 6px;
+}
+.brand-logo {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.18);
+  border: 1.5px solid rgba(255,255,255,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  backdrop-filter: blur(8px);
+}
+.brand-name {
+  font-size: 20px; font-weight: 700;
+  color: #fff; letter-spacing: -.3px;
+}
+.brand-tagline {
+  font-size: 12px; font-weight: 400;
+  color: rgba(255,255,255,.7);
+  margin-top: 1px;
+}
+
+/* ── WRAPPER ── */
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+/* ── NAV TABS ── */
+.nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 8px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.nav-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Sora', sans-serif;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-2);
+  transition: all .18s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.nav-btn:hover { background: var(--surface); color: var(--text); }
+.nav-btn.active {
+  background: var(--green-dk);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(7,94,84,.25);
+}
+
+/* ── SCENE LAYOUT ── */
+.scene {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .scene { grid-template-columns: 1fr; }
+}
+
+/* ── PHONE FRAME ── */
+.phone-wrap {
+  background: linear-gradient(160deg, #e8f5e9 0%, #f0f7f0 100%);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #c8e6c9;
+  box-shadow: var(--shadow);
+  min-height: 340px;
+}
+.phone {
+  width: 228px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 2.5px solid rgba(0,0,0,.12);
+  background: var(--chat-bg);
+  box-shadow: 0 8px 32px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.1);
+  position: relative;
+}
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 4px;
+  background: rgba(0,0,0,.15);
+  border-radius: 0 0 4px 4px;
+  z-index: 10;
+}
+
+/* phone header */
+.ph-header {
+  background: var(--green-dk);
+  padding: 10px 12px 8px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.ph-back {
+  color: rgba(255,255,255,.7);
+  font-size: 14px;
+  margin-right: -2px;
+}
+.ph-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  color: #fff; flex-shrink: 0;
+  font-family: 'DM Mono', monospace;
+}
+.ph-avatar.grp  { background: var(--green-lt); }
+.ph-avatar.bot  { background: var(--teal); }
+.ph-avatar.vend { background: #e65100; }
+.ph-name  { color: #fff; font-size: 12px; font-weight: 600; line-height: 1.2; }
+.ph-sub   { color: rgba(255,255,255,.62); font-size: 9px; margin-top: 1px; }
+.ph-icons { margin-left: auto; display: flex; gap: 12px; color: rgba(255,255,255,.7); font-size: 13px; }
+
+/* chat area */
+.chat {
+  padding: 8px 7px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--chat-bg);
+  min-height: 260px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.chat::-webkit-scrollbar { width: 3px; }
+.chat::-webkit-scrollbar-track { background: transparent; }
+.chat::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+.bubble {
+  max-width: 87%;
+  padding: 6px 9px 4px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  word-break: break-word;
+  position: relative;
+}
+.from-user {
+  background: var(--bubble-out);
+  border-radius: 10px 2px 10px 10px;
+  color: #1a1a1a;
+  align-self: flex-end;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.from-seller, .from-bot {
+  background: var(--bubble-in);
+  border-radius: 2px 10px 10px 10px;
+  color: #1a1a1a;
+  align-self: flex-start;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.msg-time {
+  font-size: 8.5px;
+  color: #9e9e9e;
+  text-align: right;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+}
+.tick { color: #53bdeb; font-size: 10px; }
+.msg-sender {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 2px;
+}
+.date-chip {
+  align-self: center;
+  background: rgba(255,255,255,.75);
+  color: #666;
+  border-radius: 99px;
+  font-size: 9px;
+  padding: 2px 10px;
+  margin: 4px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+.pin-banner {
+  background: #fffde7;
+  border-left: 3px solid var(--gold);
+  padding: 5px 8px;
+  font-size: 9.5px;
+  color: #6d4c00;
+  border-radius: 0 6px 6px 0;
+  align-self: stretch;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.typing-indicator {
+  display: flex; gap: 4px; align-items: center;
+  padding: 8px 10px;
+  background: var(--bubble-in);
+  border-radius: 2px 10px 10px 10px;
+  align-self: flex-start;
+  width: 48px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.typing-dot {
+  width: 6px; height: 6px;
+  background: #b0b0b0;
+  border-radius: 50%;
+  animation: typing 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: .2s; }
+.typing-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes typing {
+  0%,60%,100% { transform: translateY(0); opacity: .5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ── INFO PANEL ── */
+.info-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.scene-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+  font-family: 'DM Mono', monospace;
+}
+.info-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.35;
+  letter-spacing: -.2px;
+}
+.info-body {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+.insight {
+  background: linear-gradient(135deg, #f0fdf4, #e8f5e9);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #2e7d32;
+  margin-bottom: 16px;
+  border: 1px solid #c8e6c9;
+  border-left: 3px solid var(--green);
+  line-height: 1.6;
+}
+.step-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+}
+.dots { display: flex; gap: 5px; }
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all .2s;
+}
+.dot.on {
+  background: var(--green-dk);
+  width: 18px;
+  border-radius: 4px;
+}
+.next-btn {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Sora', sans-serif;
+  padding: 8px 20px;
+  border-radius: 99px;
+  cursor: pointer;
+  background: var(--green-dk);
+  color: #fff;
+  border: none;
+  transition: all .18s;
+  box-shadow: 0 2px 10px rgba(7,94,84,.22);
+  letter-spacing: .2px;
+}
+.next-btn:hover {
+  background: var(--teal);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(7,94,84,.3);
+}
+.next-btn.secondary {
+  background: transparent;
+  color: var(--green-dk);
+  border: 1.5px solid var(--green-dk);
+  box-shadow: none;
+}
+.next-btn.secondary:hover { background: var(--mint); }
+
+/* ── VENDOR SHEET ── */
+.sheet-wrap {
+  width: 100%;
+}
+.sheet-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.live-badge {
+  background: #e8f5e9;
+  color: var(--green);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid #c8e6c9;
+  letter-spacing: .5px;
+  animation: pulse-badge 2s infinite;
+}
+@keyframes pulse-badge {
+  0%,100% { opacity: 1; }
+  50% { opacity: .65; }
+}
+.sheet {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+.sh-head {
+  background: var(--green-dk);
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 70px 55px 80px 62px;
+  padding: 8px 10px;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: .3px;
+}
+.sh-row {
+  display: grid;
+  grid-template-columns: 1fr 70px 55px 80px 62px;
+  padding: 7px 10px;
+  gap: 6px;
+  border-top: 1px solid var(--border);
+  font-size: 10.5px;
+  transition: background .15s;
+}
+.sh-row:nth-child(even) { background: #f8fffe; }
+.sh-row:hover { background: #e8f5e9; }
+.order-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-3);
+}
+.amt { font-weight: 700; color: var(--green-dk); }
+.sheet-footer {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── VENDOR NOTIF ── */
+.notif-card {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.notif-header {
+  background: linear-gradient(90deg, var(--green-dk), var(--green));
+  padding: 10px 14px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.notif-body { padding: 12px 14px; }
+.notif-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+}
+.notif-row:last-child { border-bottom: none; }
+.notif-key { color: var(--text-2); }
+.notif-val { font-weight: 600; color: var(--text); }
+.notif-total {
+  background: #e8f5e9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-dk);
+}
+
+/* ── SCENE PROGRESS ── */
+.progress-bar {
+  background: var(--border);
+  height: 3px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-dk), var(--green-lt));
+  border-radius: 2px;
+  transition: width .4s ease;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.scene { animation: fadeUp .3s ease; }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="brand-logo">🍎</div>
+  <div>
+    <div class="brand-name">BudgetFruitsHub</div>
+    <div class="brand-tagline">Interactive Seller Demo — 6 Scenes</div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <div class="nav" id="nav">
+    <button class="nav-btn active" onclick="show(0)">📢 1. Group Announcement</button>
+    <button class="nav-btn" onclick="show(1)">👤 2. First-Time Signup</button>
+    <button class="nav-btn" onclick="show(2)">⚡ 3. Order in 1 Message</button>
+    <button class="nav-btn" onclick="show(3)">🔁 4. Repeat Order</button>
+    <button class="nav-btn" onclick="show(4)">📊 5. Vendor View</button>
+    <button class="nav-btn" onclick="show(5)">🚚 6. Delivery Day</button>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  <div id="content"></div>
+
+</div>
+
+<script>
+const BOT_NUM = '+1 (555) 166-6421';
+const GRP_NAME = 'BudgetFruitsHub 🍎';
+const GRP_SUB  = 'Budget Fruits Hub · 72 members';
+
+const GROUP_MSG =
+`Dear Customer, 🌟
+
+📢 *Pre-Orders Now Open*
+🗓️ Order Till: 10th April – ⏰ 11:00 PM
+🚚 Delivery On: Saturday, 11th April
+
+Enjoy farm-fresh, juicy & hand-picked fruits at unbeatable prices! 😍
+
+*Available Fruits & Prices*
+🍎 Red Delicious Apples – ₹259/kg
+🍅 Pomegranate (4 pcs/kg) – ₹255/kg
+🍐 Fresh White Guava (Big) – ₹125/kg
+🍊 Sweet Orange – ₹149/kg
+🍇 Fresh Grapes green – ₹139/kg
+
+📝 *How to Order:*
+📌 Please message us → *${BOT_NUM}*
+and mention Flat Number + Fruit Name + Quantity
+
+🙏 Thank you for choosing us!
+Budget Fruits Hub 🍎🛒`;
+
+const SCENES = [
+
+/* 0 — GROUP ANNOUNCEMENT */
+{
+  label: 'Scene 1 of 6 — Group Announcement',
+  steps: [
+    {
+      phones:[{
+        type:'group', name: GRP_NAME, sub: GRP_SUB,
+        msgs:[
+          {s:'date',t:'Today'},
+          {s:'seller', who:'Budget Fruits Hub', t: GROUP_MSG},
+          {s:'pin', t:`📌 To order, message ${BOT_NUM}`},
+        ]
+      }],
+      info:{
+        title:'Seller posts the weekly menu in the group',
+        body:'The WhatsApp group stays exactly as it is — no disruption to the 72 members. Seller posts the announcement, pins the bot number. Everyone sees it in the group they already use.',
+        tags:['✓ Group unchanged','✓ No new app','✓ Zero disruption'],
+        insight:'💡 The group is the announcement board. All ordering happens privately — keeping the group clean.'
+      }
+    },
+    {
+      phones:[{
+        type:'group', name: GRP_NAME, sub: GRP_SUB,
+        msgs:[
+          {s:'seller', who:'Budget Fruits Hub', t: GROUP_MSG},
+          {s:'pin', t:`📌 To order, message ${BOT_NUM}`},
+          {s:'user', who:'Ramesh K', t:'Thanks! 👍'},
+          {s:'user', who:'Priya M', t:'Ordering now 🍊'},
+          {s:'user', who:'Ajay S', t:'Done, already ordered! 🎉'},
+          {s:'user', who:'Meena R', t:'Love the guava price! 😍'},
+        ]
+      }],
+      info:{
+        title:'Group stays clean — no order chaos',
+        body:'Members react and comment as usual. But nobody types their orders in the group anymore. Orders go to the bot privately. The seller sees a clean, friendly group — not 72 order messages to parse manually.',
+        tags:['✓ Clean group','✓ No manual reading','✓ Seller focus = delivery'],
+        insight:'💡 This is the biggest win for sellers managing 4–5 groups across societies.'
+      }
+    }
+  ]
+},
+
+/* 1 — FIRST TIME SIGNUP */
+{
+  label: 'Scene 2 of 6 — First-Time Signup',
+  steps:[
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'date',t:'Today'},
+          {s:'user', t:'Hi'},
+          {s:'bot', t:"👋 *Welcome to Budget Fruits Hub!* 🍎🛒\n\nLet's get you set up — just *3 quick questions*.\n\nFirst, what's your *name*?"},
+        ]
+      }],
+      info:{
+        title:'User taps the bot number and says Hi',
+        body:'First-time users are greeted warmly. The bot asks 3 quick things — name, apartment, flat number. This takes about 30 seconds and is stored permanently. They will never be asked again.',
+        tags:['✓ One-time only','✓ 30 seconds','✓ Never repeated'],
+        insight:'💡 Existing customers can be pre-loaded from the seller\'s records — they skip this entirely on day one.'
+      }
+    },
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'user', t:'Hi'},
+          {s:'bot', t:"👋 Welcome! What's your *name*?"},
+          {s:'user', t:'Ajay'},
+          {s:'bot', t:"Nice to meet you, *Ajay*! 😊\n\n🏢 Which apartment are you from?\n\n  1. Suvarna Residency\n  2. Ahad\n  3. Mahaveer Orchids\n  4. GRC\n  5. Ayushi Enclave"},
+        ]
+      }],
+      info:{
+        title:'Name saved — apartment selection',
+        body:'The bot remembers the name and uses it in every future message. The apartment list is pulled live from the seller\'s Google Sheet — add or remove societies anytime without touching any code.',
+        tags:['✓ Personalised forever','✓ Live from Google Sheet','✓ Scales to any # of societies']
+      }
+    },
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'user', t:'Ajay'},
+          {s:'bot', t:"Nice to meet you, *Ajay*! Which apartment?\n  1. Suvarna Residency\n  2. Ahad…"},
+          {s:'user', t:'1'},
+          {s:'bot', t:"🏠 What's your *flat number?*\n_(e.g. B-219 or 301)_"},
+          {s:'user', t:'B219'},
+          {s:'bot', t:"✅ All set, *Ajay*! 🎉\n🏢 Suvarna Residency  |  🏠 Flat B-219\n\n🛒 *This week's fruits:*\n🍎 Red Delicious Apples – ₹259/kg\n🍅 Pomegranate – ₹255/kg\n🍐 Fresh White Guava – ₹125/kg\n🍊 Sweet Orange – ₹149/kg\n🍇 Fresh Grapes green – ₹139/kg\n\nJust type what you'd like:\n`Apple 1kg Orange 2kg`"},
+        ]
+      }],
+      info:{
+        title:'Registered — straight into ordering',
+        body:'After the flat number, profile is saved to the Google Sheet permanently. The bot immediately shows this week\'s live menu and the user can order right away. Zero extra steps.',
+        tags:['✓ Saved to Google Sheet','✓ Instant menu shown','✓ Ready to order now'],
+        insight:'💡 From this point on, this user orders in a single message — just like the old group method, but automated.'
+      }
+    }
+  ]
+},
+
+/* 2 — ORDER IN 1 MESSAGE */
+{
+  label: 'Scene 3 of 6 — Order in 1 Message',
+  steps:[
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'date',t:'Wednesday'},
+          {s:'bot', t:"👋 Hi *Ajay*! Great to see you 😊\n\n🛒 *This week's fruits:*\n🍎 Red Delicious Apples – ₹259/kg\n🍅 Pomegranate – ₹255/kg\n🍐 Fresh White Guava – ₹125/kg\n🍊 Sweet Orange – ₹149/kg\n🍇 Fresh Grapes green – ₹139/kg\n\nJust type your order!"},
+          {s:'user', t:'Apple 2kg Orange 1kg'},
+        ]
+      }],
+      info:{
+        title:'Returning user — greeted by name instantly',
+        body:'Bot recognises the number, loads the profile, and shows a personalised greeting with the live menu. User types their order in natural language — exactly how they\'d text a friend. No forms, no tapping through menus.',
+        tags:['✓ Name remembered','✓ Flat remembered','✓ Natural language order']
+      }
+    },
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'user', t:'Apple 2kg Orange 1kg'},
+          {s:'bot', t:"✅ *Order placed, Ajay!* Thank you 🙏\n\n🏢 Suvarna Residency  |  🏠 Flat B-219\n\n🍎 Red Delicious Apples 2kg — ₹518\n🍊 Sweet Orange 1kg — ₹149\n\n💵 *Total: ₹667* — Pay on delivery 🚚\n\n🍎 Fresh fruits on their way to Suvarna Residency, Flat B-219!\nSee you soon! 😊"},
+        ]
+      }],
+      info:{
+        title:'Instant receipt — no YES/NO, no confirmation screen',
+        body:'Bot parses the message, books the order immediately, and sends a detailed receipt — apartment, flat, items, prices, total. One message in, one receipt out. The experience is faster than the old group method.',
+        tags:['✓ Instant booking','✓ Itemised receipt','✓ No confirmation needed'],
+        insight:'💡 This is the key comparison for the demo: old way = type in group, wait for seller reply. New way = type to bot, instant automated receipt.'
+      }
+    }
+  ]
+},
+
+/* 3 — REPEAT ORDER */
+{
+  label: 'Scene 4 of 6 — Repeat Order',
+  steps:[
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'date',t:'Next Wednesday'},
+          {s:'bot', t:"👋 Hi *Ajay*! 😊\n\n🛒 *This week's fruits:*\n🍎 Red Delicious Apples – ₹259/kg\n🍊 Sweet Orange – ₹149/kg\n🍇 Fresh Grapes green – ₹139/kg"},
+          {s:'user', t:'repeat order'},
+        ]
+      }],
+      info:{
+        title:'User says "repeat order" — bot remembers everything',
+        body:'The bot stores the last order. Next week, the user just says "repeat order" and the bot shows exactly what they ordered last time, ready to confirm. No need to remember items or quantities.',
+        tags:['✓ Zero effort','✓ Memory built-in','✓ Works every week forever']
+      }
+    },
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'user', t:'repeat order'},
+          {s:'bot', t:"🔁 *Repeat your last order?*\n\n🏢 Suvarna Residency  |  🏠 Flat B-219\n\n🍎 Red Delicious Apples 2kg @ ₹259 = ₹518\n🍊 Sweet Orange 1kg @ ₹149 = ₹149\n\n💰 *Total: ₹667*\n─────────────────────\nReply *YES* to confirm ✅  |  *NO* to cancel ❌"},
+          {s:'user', t:'yes'},
+          {s:'bot', t:"✅ *Order placed, Ajay!* Thank you 🙏\n\n🏢 Suvarna Residency  |  🏠 Flat B-219\n💵 *Total: ₹667* — Pay on delivery 🚚\n\nSee you soon! 😊"},
+        ]
+      }],
+      info:{
+        title:'Confirmed in 2 messages total',
+        body:'User sees last week\'s full order with prices, says YES, it\'s booked instantly. The entire repeat order flow is 2 messages. Every week after the first is exactly this simple — 10 seconds from start to receipt.',
+        tags:['✓ 2 messages total','✓ Prices shown clearly','✓ Logged to sheet instantly'],
+        insight:'💡 Loyal weekly customers — which is most of your base — will use this almost exclusively after the first order.'
+      }
+    }
+  ]
+},
+
+/* 4 — VENDOR VIEW */
+{
+  label: 'Scene 5 of 6 — Vendor View',
+  steps:[
+    {
+      phones:[{
+        type:'vend', name:'Budget Fruits Hub (You)', sub:'seller account',
+        msgs:[
+          {s:'date',t:'Wednesday 9:42 PM'},
+          {s:'bot', t:"🛎️ *NEW ORDER*\n\n🏢 Suvarna Residency  |  🏠 Flat B-219\n📞 ***6421\n\n*Items ordered:*\n  🍎 Red Delicious Apples 2kg — ₹518\n  🍊 Sweet Orange 1kg — ₹149\n\n💰 Total: ₹667  |  💵 Pay on delivery\n\n📦 *Remaining stock:*\n  🍎 Apples: 18kg left\n  🍊 Orange: 24kg left"},
+        ]
+      }],
+      info:{
+        title:'You get an instant notification for every order',
+        body:'The moment any customer\'s order is placed — across any society, any group — you receive a structured WhatsApp notification with apartment, flat, items, total, and remaining stock levels. No manual tracking.',
+        tags:['✓ Instant alert','✓ Stock levels shown','✓ Works across all societies'],
+        insight:'💡 Managing 4–5 groups becomes one unified inbox. Every order from every society lands here automatically.'
+      }
+    },
+    {
+      phones: null,
+      sheet: true,
+      info:{
+        title:'All orders in a live Google Sheet — always up to date',
+        body:'Every confirmed order from every customer across all societies is logged automatically with a unique ID, timestamp, apartment, flat, items, unit price, and total. Open the sheet anytime on any device.',
+        tags:['✓ Auto-logged','✓ All societies in one sheet','✓ Ready for invoicing']
+      }
+    },
+    {
+      phones:[{
+        type:'vend', name:'Budget Fruits Hub (You)', sub:'seller account',
+        msgs:[
+          {s:'user', t:'print invoices'},
+          {s:'bot', t:"⏳ Generating invoices sheet…"},
+          {s:'bot', t:"✅ *Invoices sheet updated!*\n\n📊 3 apartments  •  18 flats  •  42 orders\n\nOpen Google Sheet → *Invoices* tab to print."},
+        ]
+      }],
+      info:{
+        title:'One keyword generates all invoices',
+        body:'You type "print invoices" — the bot organises every order by society and flat into a clean, print-ready Google Sheet. Hand it to your delivery person and go.',
+        tags:['✓ Grouped by society','✓ Grouped by flat','✓ Print-ready in seconds'],
+        insight:'💡 What used to take an hour of Excel work on Friday evening now takes one WhatsApp message.'
+      }
+    }
+  ]
+},
+
+/* 5 — DELIVERY DAY */
+{
+  label: 'Scene 6 of 6 — Delivery Day',
+  steps:[
+    {
+      phones:[{
+        type:'group', name: GRP_NAME, sub: GRP_SUB,
+        msgs:[
+          {s:'date',t:'Saturday 9:00 AM'},
+          {s:'seller', who:'Budget Fruits Hub', t:"🚚 *Delivery is on the way!*\n\nAll orders will be delivered between *10 AM – 1 PM* today.\n\nThank you for choosing us! 🍎🙏\n\n_Budget Fruits Hub_"},
+          {s:'user', who:'Ajay S', t:'Thank you! 🙏'},
+          {s:'user', who:'Priya M', t:'Waiting! 😊'},
+        ]
+      }],
+      info:{
+        title:'One broadcast to all 72 members — delivery update',
+        body:'On delivery day, you send one message to the group. Everyone knows their fruits are on the way. No individual messages, no phone calls, no confusion.',
+        tags:['✓ One message to all','✓ Group stays active','✓ Professional experience']
+      }
+    },
+    {
+      phones:[{
+        type:'bot', name:'Budget Fruits Hub', sub:'online',
+        msgs:[
+          {s:'user', t:'update my address'},
+          {s:'bot', t:"Sure, *Ajay*! Let's update your address. 📍\n\n🏢 Which apartment?\n  1. Suvarna Residency\n  2. Ahad\n  3. Mahaveer Orchids\n  4. GRC\n  5. Ayushi Enclave"},
+          {s:'user', t:'2'},
+          {s:'bot', t:"🏠 And your new *flat number?*\n_(e.g. C-304 or 401)_"},
+          {s:'user', t:'C304'},
+          {s:'bot', t:"✅ Address updated, *Ajay*!\n🏢 Ahad  |  🏠 Flat C-304\n\nYou're all set for your next order 🍎"},
+        ]
+      }],
+      info:{
+        title:'Customer moved? Updated in 30 seconds, permanently',
+        body:'If a customer changes flat or moves to a different society, they type "update my address". Two questions, done. Their new address is saved instantly — every future order goes to the right flat automatically.',
+        tags:['✓ 30 seconds to update','✓ Saved permanently','✓ No admin work for seller'],
+        insight:'💡 This also works for "change my flat" or "I moved" — the bot understands natural language.'
+      }
+    }
+  ]
+}
+
+];
+
+let sceneIdx = 0, stepIdx = 0;
+
+function buildPhone(p) {
+  const isGroup = p.type === 'group';
+  const isVend  = p.type === 'vend';
+  const avatarClass = isGroup ? 'grp' : isVend ? 'vend' : 'bot';
+  const initials    = isGroup ? 'BF' : isVend ? 'V' : 'BF';
+  const bgColor     = isGroup ? '#25d366' : isVend ? '#e65100' : '#00897b';
+
+  let msgs = '';
+  p.msgs.forEach(m => {
+    if (m.s === 'pin') {
+      msgs += `<div class="pin-banner">📌 ${m.t}</div>`;
+    } else if (m.s === 'date') {
+      msgs += `<div class="date-chip">${m.t}</div>`;
+    } else if (m.s === 'typing') {
+      msgs += `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+    } else {
+      const cls = m.s === 'user' ? 'from-user' : m.s === 'seller' ? 'from-seller' : 'from-bot';
+      const sender = (isGroup && m.who && m.s !== 'user')
+        ? `<div class="msg-sender">${m.who}</div>` : '';
+      const body = m.t
+        .replace(/\*(.*?)\*/g, '<strong>$1</strong>')
+        .replace(/_(.*?)_/g, '<em>$1</em>')
+        .replace(/`(.*?)`/g, '<code style="background:#f0f0f0;padding:1px 4px;border-radius:4px;font-family:monospace;font-size:10px">$1</code>')
+        .replace(/\n/g, '<br>');
+      const tick = m.s === 'user' ? '<span class="tick">✓✓</span>' : '';
+      msgs += `<div class="bubble ${cls}">${sender}${body}<div class="msg-time">${tick} now</div></div>`;
+    }
+  });
+
+  return `<div class="phone">
+    <div class="ph-header">
+      <span class="ph-back">‹</span>
+      <div class="ph-avatar ${avatarClass}">${initials}</div>
+      <div>
+        <div class="ph-name">${p.name}</div>
+        <div class="ph-sub">${p.sub}</div>
+      </div>
+      <div class="ph-icons">📞 ⋮</div>
+    </div>
+    <div class="chat">${msgs}</div>
+  </div>`;
+}
+
+function buildSheet() {
+  return `<div class="sheet-wrap">
+    <div class="sheet-label">
+      Orders Sheet (Google Sheets)
+      <span class="live-badge">● LIVE</span>
+    </div>
+    <div class="sheet">
+      <div class="sh-head">
+        <span>Order ID</span><span>Society</span><span>Flat</span><span>Items</span><span>Total</span>
+      </div>
+      <div class="sh-row">
+        <span class="order-id">ORD-1004-6421</span>
+        <span>Suvarna</span><span>B-219</span>
+        <span>🍎 2kg 🍊 1kg</span>
+        <span class="amt">₹667</span>
+      </div>
+      <div class="sh-row">
+        <span class="order-id">ORD-1004-8832</span>
+        <span>Suvarna</span><span>A-104</span>
+        <span>🍐 1kg 🍇 2kg</span>
+        <span class="amt">₹403</span>
+      </div>
+      <div class="sh-row">
+        <span class="order-id">ORD-1004-2291</span>
+        <span>Ahad</span><span>C-302</span>
+        <span>🍊 2kg 🍅 1kg</span>
+        <span class="amt">₹553</span>
+      </div>
+      <div class="sh-row">
+        <span class="order-id">ORD-1004-5514</span>
+        <span>GRC</span><span>D-501</span>
+        <span>🍎 3kg</span>
+        <span class="amt">₹777</span>
+      </div>
+      <div class="sh-row">
+        <span class="order-id">ORD-1004-9037</span>
+        <span>Mahaveer</span><span>F-208</span>
+        <span>🍇 1kg 🍐 2kg</span>
+        <span class="amt">₹389</span>
+      </div>
+    </div>
+    <div class="sheet-footer">
+      🟢 Every order lands here automatically — you never type anything.
+    </div>
+  </div>`;
+}
+
+function render() {
+  const scene = SCENES[sceneIdx];
+  const step  = scene.steps[stepIdx];
+  const total = scene.steps.length;
+
+  // Progress bar
+  const pct = ((sceneIdx * 100) + (stepIdx / Math.max(total-1,1) * 100/SCENES.length)) / SCENES.length * SCENES.length;
+  const overallPct = (sceneIdx / SCENES.length * 100) + ((stepIdx+1) / total / SCENES.length * 100);
+  document.getElementById('progress').style.width = overallPct + '%';
+
+  // Phone / sheet area
+  let leftHTML = '';
+  if (step.sheet) {
+    leftHTML = `<div class="phone-wrap" style="align-items:stretch;padding:16px">${buildSheet()}</div>`;
+  } else if (step.phones) {
+    const phonesHTML = step.phones.map(p => buildPhone(p)).join('');
+    leftHTML = `<div class="phone-wrap">${phonesHTML}</div>`;
+  }
+
+  const dots = Array.from({length: total}, (_,i) =>
+    `<div class="dot${i === stepIdx ? ' on' : ''}"></div>`).join('');
+
+  const info = step.info;
+  const tags = info.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+  const nextBtn = stepIdx < total - 1
+    ? `<button class="next-btn" onclick="next()">Next step →</button>` : '';
+  const sceneBtn = stepIdx === total - 1 && sceneIdx < SCENES.length - 1
+    ? `<button class="next-btn secondary" onclick="nextScene()">Next scene →</button>` : '';
+
+  document.getElementById('content').innerHTML = `
+    <div class="scene">
+      ${leftHTML}
+      <div class="info-card">
+        <div class="scene-label">${scene.label}</div>
+        <div class="info-title">${info.title}</div>
+        <div class="info-body">${info.body}</div>
+        <div class="tags">${tags}</div>
+        ${info.insight ? `<div class="insight">${info.insight}</div>` : ''}
+        <div class="step-controls">
+          <div class="dots">${dots}</div>
+          ${nextBtn}
+          ${sceneBtn}
+        </div>
+      </div>
+    </div>`;
+
+  // Scroll chat to bottom
+  setTimeout(() => {
+    document.querySelectorAll('.chat').forEach(c => c.scrollTop = c.scrollHeight);
+  }, 50);
+}
+
+function show(i) {
+  sceneIdx = i; stepIdx = 0;
+  document.querySelectorAll('.nav-btn').forEach((b,j) => b.classList.toggle('active', j===i));
+  render();
+}
+
+function next() {
+  if (stepIdx < SCENES[sceneIdx].steps.length - 1) { stepIdx++; render(); }
+}
+
+function nextScene() {
+  if (sceneIdx < SCENES.length - 1) { show(sceneIdx + 1); }
+}
+
+show(0);
+</script>
+</body>
+</html>
